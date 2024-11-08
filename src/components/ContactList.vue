@@ -1,9 +1,11 @@
 <template>
   <div class="contact-list">
-    <h2 class="contact-list__title">Список контактов</h2>
-    <SearchBar @search="handleSearch" />
+    <div v-if="store.state.contacts.length > 0">
+      <h2 class="contact-list__title">Список контактов</h2>
+      <SearchBar @search="handleSearch" />
+    </div>
 
-    <ul class="contact-list__contacts">
+    <ul v-if="paginatedContacts.length > 0" class="contact-list__contacts">
       <ContactItem
         v-for="contact in paginatedContacts"
         :key="contact.id"
@@ -12,6 +14,10 @@
         @delete="deleteContact"
       />
     </ul>
+
+    <p v-else-if="store.state.searchQuery" class="contact-list__empty">
+      Контакты не найдены
+    </p>
 
     <div v-if="pageCount > 1" class="contact-list__pagination">
       <button
@@ -122,5 +128,10 @@ function deleteContact(id: string) {
 .contact-list__page-info {
   font-weight: bold;
   color: var(--text-color);
+}
+.contact-list__empty {
+  text-align: center;
+  color: var(--text-color-light);
+  margin-top: 20px;
 }
 </style>

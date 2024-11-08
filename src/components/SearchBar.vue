@@ -24,7 +24,7 @@ function onSearch() {
 <style scoped>
 .search-bar__input {
   padding: 8px;
-  width: 100%;
+  width: 60%;
   border: 1px solid var(--background-color03);
   border-radius: 4px;
 }

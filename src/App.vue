@@ -1,30 +1,55 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <div id="app">
+    <ContactForm />
+    <ContactList />
+    <button
+      @click="loadContacts"
+      class="app__button app__button--load"
+      :disabled="isLoading"
+    >
+      {{ isLoading ? "Загрузка..." : "Загрузить контакты из API" }}
+    </button>
+  </div>
 </template>
 
-<style lang="scss">
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStore } from "vuex";
+import ContactForm from "./components/ContactForm.vue";
+import ContactList from "./components/ContactList.vue";
+
+const store = useStore();
+
+const isLoading = computed(() => store.getters.isLoading);
+
+function loadContacts() {
+  store.dispatch("loadContactsFromAPI");
+}
+</script>
+
+<style scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  padding: 20px;
+  margin-top: 15px;
 }
 
-nav {
-  padding: 30px;
+.app__button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: var(--background-color01);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+.app__button:hover:not(:disabled) {
+  background-color: var(--background-color02);
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.app__button--load[disabled] {
+  background-color: var(--background-color01);
+  cursor: not-allowed;
 }
 </style>
